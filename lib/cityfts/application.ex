@@ -6,8 +6,10 @@ defmodule CityFTS.Application do
   use Application
 
   def start(_type, _args) do
+    import Supervisor.Spec
     # List all child processes to be supervised
     children = [
+      CityFTS.Repo
       # Starts a worker by calling: CityFTS.Worker.start_link(arg)
       # {CityFTS.Worker, arg},
     ]
