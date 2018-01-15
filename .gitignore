@@ -21,3 +21,6 @@ erl_crash.dump
 
 # vim
 *.sw?
+
+# Geonames data
+geonames_data
