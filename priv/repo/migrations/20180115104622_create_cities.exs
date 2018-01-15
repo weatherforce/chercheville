@@ -10,8 +10,8 @@ defmodule CityFTS.Repo.Migrations.CreateCities do
       add :latitude, :float, null: false
       add :longitude, :float, null: false
       add :country_code, :string, size: 2, null: false
-      add :admin1, :string, size: 20
-      add :admin2, :string, size: 80
+      add :admin1_code, :string, size: 20
+      add :admin2_code, :string, size: 80
       add :admin1_name, :string, null: false
       add :admin2_name, :string, null: false
     end

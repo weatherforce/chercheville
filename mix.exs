@@ -24,7 +24,8 @@ defmodule CityFTS.Mixfile do
     [
       {:ecto, "~> 2.0"},
       {:postgrex, "~> 0.11"},
-      {:httpotion, "~> 3.0"}
+      {:httpotion, "~> 3.0"},
+      {:csv, "~> 2.0.0"}
     ]
   end
 end
