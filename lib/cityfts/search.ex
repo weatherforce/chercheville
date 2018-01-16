@@ -2,7 +2,7 @@ defmodule CityFTS.Search do
   use GenServer
 
   def start_link(state \\ []), do:
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+    GenServer.start_link(__MODULE__, state, name: {:global, __MODULE__})
 
   def query(server, search_string, limit \\ 10) when is_binary(search_string), do:
     GenServer.call(server, {:query, search_string, limit})

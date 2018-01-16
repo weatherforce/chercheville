@@ -9,7 +9,7 @@ defmodule CityFTS.Application do
     import Supervisor.Spec
     # List all child processes to be supervised
     children = [
-      CityFTS.Repo
+      CityFTS.Repo, CityFTS.Search
       # Starts a worker by calling: CityFTS.Worker.start_link(arg)
       # {CityFTS.Worker, arg},
     ]
