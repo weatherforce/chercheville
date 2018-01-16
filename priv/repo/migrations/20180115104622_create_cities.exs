@@ -14,6 +14,7 @@ defmodule CityFTS.Repo.Migrations.CreateCities do
       add :admin2_code, :string, size: 80
       add :admin1_name, :string, null: false
       add :admin2_name, :string, null: false
+      add :population, :integer, null: false
     end
   end
 end

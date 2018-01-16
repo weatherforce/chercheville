@@ -14,6 +14,7 @@ defmodule CityFTS.City do
     field :admin2_code, :string
     field :admin1_name, :string
     field :admin2_name, :string
+    field :population, :integer
   end
 
   def changeset(city, params \\ %{}) do
@@ -28,7 +29,8 @@ defmodule CityFTS.City do
       :admin1_code,
       :admin2_code,
       :admin1_name,
-      :admin2_name
+      :admin2_name,
+      :population
     ])
   end
 end
