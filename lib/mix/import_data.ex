@@ -25,12 +25,23 @@ defmodule Mix.Tasks.ImportData do
       modification_date 
     }
 
-  @shortdoc "Import data files from geonames.org into the database"
+  @shortdoc """
+  Import data files from geonames.org into the database.
+
+  Files structure:
+    http://download.geonames.org/export/dump/readme.txt
+  Codes reference:
+    http://www.geonames.org/export/codes.html
+  """
   def run(country_codes) do
-    ensure_started(CityFTS.Repo, [])
-    admin1_codes = read_admin_codes("admin1CodesASCII.txt")
-    admin2_codes = read_admin_codes("admin2Codes.txt")
-    import_countries(country_codes, admin1_codes, admin2_codes)
+    if length(country_codes) < 1 do
+      IO.puts("missing country code argument")
+    else
+      ensure_started(CityFTS.Repo, [])
+      admin1_codes = read_admin_codes("admin1CodesASCII.txt")
+      admin2_codes = read_admin_codes("admin2Codes.txt")
+      import_countries(country_codes, admin1_codes, admin2_codes)
+    end
   end
 
   defp import_countries(country_codes, admin1_codes, admin2_codes) do
