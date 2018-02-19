@@ -53,9 +53,9 @@ defmodule Mix.Tasks.ImportData do
     read_csv(filename)
     |> filter_cities
     |> filter_has_admin2
+    |> filter_out_sections_of_populated_places
     |> add_admin1_names(country_code, admin1_codes)
     |> add_admin2_names(country_code, admin2_codes)
-    |> IO.inspect
     |> insert_into_database
   end
 
@@ -70,11 +70,21 @@ defmodule Mix.Tasks.ImportData do
   end
 
   defp filter_cities(rows) do
+    # P    | city, village,...
     Stream.filter(rows, &(&1["feature_class"] == "P"))
   end
 
   defp filter_has_admin2(rows) do
     Stream.filter(rows, &(&1["admin2_code"] != ""))
+  end
+
+  defp filter_out_sections_of_populated_places(rows) do
+    digit_regexp = ~r/\d/
+    rows |> Stream.reject(&(
+      # Code reference: http://www.geonames.org/export/codes.html
+      &1["feature_code"] in ["PPLX", "PPLH"]
+      or Regex.match?(digit_regexp, &1["name"])
+    ))
   end
 
   defp insert_into_database(cities) do
