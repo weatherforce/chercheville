@@ -4,7 +4,7 @@ defmodule CityFTS.SeedData do
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
 
   @base_url "http://download.geonames.org/export/dump/"
-  @data_dir File.cwd!() <> "/geonames_data/"
+  @data_dir "./geonames_data/"
   @places_headers ~w{
       geonameid         
       name              
