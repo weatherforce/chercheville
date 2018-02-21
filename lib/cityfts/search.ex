@@ -1,6 +1,10 @@
 defmodule CityFTS.Search do
   use GenServer
 
+  def init(args) do
+    {:ok, args}
+  end
+
   def start_link(state \\ []), do:
     GenServer.start_link(__MODULE__, state, name: __MODULE__)
 
