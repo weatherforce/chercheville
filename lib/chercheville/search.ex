@@ -1,4 +1,4 @@
-defmodule CityFTS.Search do
+defmodule ChercheVille.Search do
   use GenServer
 
   def init(args) do
@@ -15,12 +15,12 @@ defmodule CityFTS.Search do
     require Ecto.Query
 
     query = Ecto.Query.from(
-      city in CityFTS.City,
+      city in ChercheVille.City,
       where: ilike(city.name, ^"#{search_string}%"),
       limit: ^limit,
       order_by: [desc: city.population]
     )
-    cities = query |> CityFTS.Repo.all
+    cities = query |> ChercheVille.Repo.all
     {:reply, cities, state}
   end
 

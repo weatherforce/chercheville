@@ -1,4 +1,4 @@
-defmodule CityFTS.Repo.Migrations.CreateCities do
+defmodule ChercheVille.Repo.Migrations.CreateCities do
   use Ecto.Migration
 
   def change do

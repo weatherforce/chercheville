@@ -2,13 +2,13 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :cityfts, CityFTS.Repo,
+config :chercheville, ChercheVille.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "cities",
   username: "postgres",
   password: "postgres",
   hostname: "localhost"
-config :cityfts, ecto_repos: [CityFTS.Repo]
+config :chercheville, ecto_repos: [ChercheVille.Repo]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -18,11 +18,11 @@ config :cityfts, ecto_repos: [CityFTS.Repo]
 
 # You can configure your application as:
 #
-#     config :cityfts, key: :value
+#     config :chercheville, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:cityfts, :key)
+#     Application.get_env(:chercheville, :key)
 #
 # You can also configure a 3rd-party app:
 #

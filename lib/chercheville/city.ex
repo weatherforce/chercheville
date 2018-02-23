@@ -1,4 +1,4 @@
-defmodule CityFTS.City do
+defmodule ChercheVille.City do
   use Ecto.Schema
 
   @primary_key {:geonameid, :integer, autogenerate: false}

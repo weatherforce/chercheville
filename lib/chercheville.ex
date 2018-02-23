@@ -1,6 +1,6 @@
-defmodule CityFTS do
+defmodule ChercheVille do
   @moduledoc """
-  Documentation for CityFTS.
+  Documentation for ChercheVille.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule CityFTS do
 
   ## Examples
 
-      iex> CityFTS.hello
+      iex> ChercheVille.hello
       :world
 
   """

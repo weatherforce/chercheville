@@ -9,5 +9,5 @@ defmodule Mix.Tasks.ImportData do
   Codes reference:
     http://www.geonames.org/export/codes.html
   """
-  def run(country_codes), do: CityFTS.SeedData.import_data(country_codes)
+  def run(country_codes), do: ChercheVille.SeedData.import_data(country_codes)
 end

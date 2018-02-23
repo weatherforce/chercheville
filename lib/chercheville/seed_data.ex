@@ -1,4 +1,4 @@
-defmodule CityFTS.SeedData do
+defmodule ChercheVille.SeedData do
   import Mix.Ecto
 
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
@@ -29,7 +29,7 @@ defmodule CityFTS.SeedData do
 
   def fetch_data(country_codes \\ []) do
     load_config()
-    country_codes = Application.get_env(:cityfts, :country_codes, country_codes)
+    country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
@@ -66,11 +66,11 @@ defmodule CityFTS.SeedData do
   def import_data(country_codes \\ []) do
     load_config()
     start_repo()
-    country_codes = Application.get_env(:cityfts, :country_codes, country_codes)
+    country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      ensure_started(CityFTS.Repo, [])
+      ensure_started(ChercheVille.Repo, [])
       admin1_codes = read_admin_codes("admin1CodesASCII.txt")
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)
@@ -122,8 +122,8 @@ defmodule CityFTS.SeedData do
 
   defp insert_into_database(cities) do
     Enum.each(cities, fn(city) ->
-      changeset = CityFTS.City.changeset(%CityFTS.City{}, city)
-      CityFTS.Repo.insert(changeset)
+      changeset = ChercheVille.City.changeset(%ChercheVille.City{}, city)
+      ChercheVille.Repo.insert(changeset)
     end)
   end
 
@@ -152,7 +152,7 @@ defmodule CityFTS.SeedData do
     end)
   end
 
-  defp load_config, do: Application.load(:cityfts)
+  defp load_config, do: Application.load(:chercheville)
 
   defp start_repo, do: Enum.each(@start_apps, &Application.ensure_all_started/1)
 end
