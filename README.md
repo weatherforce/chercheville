@@ -1,6 +1,9 @@
 # ChercheVille
 
-An Elixir service for finding cities location and or full text search.
+An Elixir service for finding cities.
+
+* full text search
+* nearest to coordinates
 
 
 ## Installation
