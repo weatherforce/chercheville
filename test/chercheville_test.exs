@@ -6,14 +6,14 @@ defmodule ChercheVilleTest do
     Ecto.Adapters.SQL.Sandbox.mode(ChercheVille.Repo, {:shared, self()})
   end
 
-  defp insert_city(geonameid, name) do
+  defp insert_city(geonameid, name, latitude \\ 43, longitude \\ 1) do
+    point = %Geo.Point{ coordinates: {latitude, longitude}, srid: 4326}
     city = %{
       "geonameid": geonameid,
       "name": name,
       "asciiname": "Toulouse",
       "alternatenames": "Touluse",
-      "latitude": 43,
-      "longitude": 1,
+      "geom": point,
       "country_code": "FR",
       "admin1_code": "",
       "admin2_code": "",
@@ -22,13 +22,19 @@ defmodule ChercheVilleTest do
       "population": 400_000
     }
     changeset = ChercheVille.City.changeset(%ChercheVille.City{}, city)
-    {:ok, _} = ChercheVille.Repo.insert(changeset)
-    geonameid
+    ChercheVille.Repo.insert!(changeset)
   end
 
-  test "greets the world" do
+  test "start substring" do
     insert_city(123930305, "Toulouse")
-    [%ChercheVille.City{geonameid: geonameid} | _] = ChercheVille.Search.query("toul")
+    [%ChercheVille.City{geonameid: geonameid} | _] = ChercheVille.Search.text("toul")
     assert geonameid == 123930305
+  end
+
+  test "nearest to coordinates" do
+    insert_city(123930305, "foo", 2, 20)
+    insert_city(123930306, "bar", 42, 0)
+    [%ChercheVille.City{geonameid: geonameid} | _] = ChercheVille.Search.coordinates(43, 1)
+    assert geonameid == 123930306
   end
 end

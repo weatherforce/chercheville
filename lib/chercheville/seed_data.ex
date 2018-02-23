@@ -99,7 +99,15 @@ defmodule ChercheVille.SeedData do
       {:ok, _} -> true
       _ -> false
     end)
-    |> Stream.map(fn({:ok, row}) -> row end)
+    |> Stream.map(fn({:ok, row}) ->
+      {latitude, _} = Float.parse(row["latitude"])
+      {longitude, _} = Float.parse(row["longitude"])
+      point = %Geo.Point{ coordinates: {latitude, longitude}, srid: 4326}
+      row
+      |> Map.put("geom", point)
+      |> Map.delete("latitude")
+      |> Map.delete("longitude")
+    end)
   end
 
   defp filter_cities(rows) do

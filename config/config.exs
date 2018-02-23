@@ -4,6 +4,7 @@ use Mix.Config
 
 config :chercheville, ChercheVille.Repo,
   adapter: Ecto.Adapters.Postgres,
+  types: ChercheVille.PostgresTypes,
   database: "cities",
   username: "postgres",
   password: "postgres",

@@ -7,8 +7,7 @@ defmodule ChercheVille.City do
     field :name, :string
     field :asciiname, :string
     field :alternatenames, :string
-    field :latitude, :float
-    field :longitude, :float
+    field :geom, Geo.Geometry
     field :country_code, :string
     field :admin1_code, :string
     field :admin2_code, :string
@@ -23,8 +22,7 @@ defmodule ChercheVille.City do
       :name,
       :asciiname,
       :alternatenames,
-      :latitude,
-      :longitude,
+      :geom,
       :country_code,
       :admin1_code,
       :admin2_code,
