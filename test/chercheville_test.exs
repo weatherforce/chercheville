@@ -27,14 +27,22 @@ defmodule ChercheVilleTest do
 
   test "start substring" do
     insert_city(123930305, "Toulouse")
-    [%ChercheVille.City{geonameid: geonameid} | _] = ChercheVille.Search.text("toul")
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.text("toul")
     assert geonameid == 123930305
   end
 
   test "nearest to coordinates" do
     insert_city(123930305, "foo", 2, 20)
     insert_city(123930306, "bar", 42, 0)
-    [%ChercheVille.City{geonameid: geonameid} | _] = ChercheVille.Search.coordinates(43, 1)
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.coordinates(43, 1)
     assert geonameid == 123930306
+  end
+
+  test "geom converted to latitude and longitude" do
+    insert_city(123930305, "foo", 2, 20)
+    [city | _] = ChercheVille.Search.text("foo")
+    assert city[:latitude] == 2
+    assert city[:longitude] == 20
+    assert is_nil(city[:geom])
   end
 end

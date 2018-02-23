@@ -23,7 +23,7 @@ defmodule ChercheVille.Search do
       limit: ^limit,
       order_by: [desc: city.population]
     )
-    cities = query |> ChercheVille.Repo.all
+    cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
     {:reply, cities, state}
   end
 
@@ -37,8 +37,18 @@ defmodule ChercheVille.Search do
       limit: ^limit,
       order_by: [asc: st_distance(city.geom, ^point)]
     )
-    cities = query |> ChercheVille.Repo.all
+    cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
     {:reply, cities, state}
+  end
+
+  defp geom_to_coordinates(cities) do
+    cities |> Enum.map(fn (city) ->
+      %Geo.Point{coordinates: {latitude, longitude}} = Map.get(city, :geom)
+      Map.from_struct(city)
+      |> Map.put(:latitude, latitude)
+      |> Map.put(:longitude, longitude)
+      |> Map.delete(:geom)
+    end)
   end
 
 end
