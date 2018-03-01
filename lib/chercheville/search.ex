@@ -14,31 +14,36 @@ defmodule ChercheVille.Search do
   def coordinates(latitude, longitude, limit \\ 10) when is_number(latitude) and is_number(longitude), do:
     GenServer.call(__MODULE__, {:coordinates, latitude, longitude, limit})
 
-  def handle_call({:text, search_string, limit}, _from, state) do
+  def handle_call({:text, search_string, limit}, from, state) do
     require Ecto.Query
 
-    query = Ecto.Query.from(
-      city in ChercheVille.City,
-      where: ilike(city.name, ^"#{search_string}%"),
-      limit: ^limit,
-      order_by: [desc: city.population]
-    )
-    cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
-    {:reply, cities, state}
+    spawn(fn ->
+      query = Ecto.Query.from(
+        city in ChercheVille.City,
+        where: ilike(city.name, ^"#{search_string}%"),
+        limit: ^limit,
+        order_by: [desc: city.population]
+      )
+      cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
+      GenServer.reply(from, cities)
+    end)
+    {:noreply, state}
   end
 
-  def handle_call({:coordinates, latitude, longitude, limit}, _from, state) do
+  def handle_call({:coordinates, latitude, longitude, limit}, from, state) do
     require Ecto.Query
     import Geo.PostGIS
     point = %Geo.Point{ coordinates: {latitude, longitude}, srid: 4326}
-
-    query = Ecto.Query.from(
-      city in ChercheVille.City,
-      limit: ^limit,
-      order_by: [asc: st_distance(city.geom, ^point)]
-    )
-    cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
-    {:reply, cities, state}
+    spawn(fn ->
+      query = Ecto.Query.from(
+        city in ChercheVille.City,
+        limit: ^limit,
+        order_by: [asc: st_distance(city.geom, ^point)]
+      )
+      cities = query |> ChercheVille.Repo.all |> geom_to_coordinates
+      GenServer.reply(from, cities)
+    end)
+    {:noreply, state}
   end
 
   defp geom_to_coordinates(cities) do
