@@ -4,7 +4,6 @@ defmodule ChercheVille.SeedData do
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
 
   @base_url "http://download.geonames.org/export/dump/"
-  @data_dir "./geonames_data/"
   @places_headers ~w{
       geonameid         
       name              
@@ -27,13 +26,17 @@ defmodule ChercheVille.SeedData do
       modification_date 
     }
 
+  defp data_dir do
+    Application.get_env(:chercheville, :data_dir, "./geonames_data/")
+  end
+
   def fetch_data(country_codes \\ []) do
     load_config()
     country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      File.mkdir(@data_dir)
+      File.mkdir(data_dir())
 
       HTTPotion.start()
 
@@ -47,11 +50,11 @@ defmodule ChercheVille.SeedData do
   end
 
   defp unzip(filename) do
-    to_charlist(filename) |> :zip.unzip(cwd: @data_dir)
+    to_charlist(filename) |> :zip.unzip(cwd: data_dir())
   end
 
   defp fetch_file(filename) do
-    destination_filename = @data_dir <> filename
+    destination_filename = data_dir() <> filename
     if not File.exists?(destination_filename) do
       url = @base_url <> filename
       IO.puts("Download #{url}")
@@ -82,7 +85,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp import_country(country_code, admin1_codes, admin2_codes) do
-    filename = @data_dir <> country_code <> ".txt"
+    filename = data_dir() <> country_code <> ".txt"
     read_csv(filename)
     |> filter_cities
     |> filter_has_admin2
@@ -152,7 +155,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp read_admin_codes(filename) do
-    File.stream!(@data_dir <> filename)
+    File.stream!(data_dir() <> filename)
     |> CSV.decode(separator: ?\t, headers: ["code", "name", "asciiname", "geonameid"])
     |> Enum.reduce(%{}, fn
       {:ok, row}, map -> Map.put(map, row["code"], row)

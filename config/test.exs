@@ -8,3 +8,6 @@ config :chercheville, ChercheVille.Repo,
   password: "postgres",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :chercheville,
+  data_dir: Path.join([File.cwd!(), "test", "geonames_data"]) <> "/"

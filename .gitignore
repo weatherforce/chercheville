@@ -23,4 +23,4 @@ erl_crash.dump
 *.sw?
 
 # Geonames data
-geonames_data
+/geonames_data/

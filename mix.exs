@@ -7,7 +7,9 @@ defmodule ChercheVille.Mixfile do
       version: "0.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]
     ]
   end
 
@@ -26,7 +28,8 @@ defmodule ChercheVille.Mixfile do
       {:postgrex, "~> 0.11"},
       {:httpotion, "~> 3.0"},
       {:csv, "~> 2.0.0"},
-      {:geo_postgis, "~> 1.0"}
+      {:geo_postgis, "~> 1.0"},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 end

@@ -1,4 +1,4 @@
-defmodule ChercheVilleTest do
+defmodule SearchTest do
   use ExUnit.Case, async: true
 
   setup do

@@ -1,0 +1,11 @@
+ZZ.VLG.VWV	Provincie West-Vlaanderen	Provincie West-Vlaanderen	2783770
+ZZ.VLG.VOV	Provincie Oost-Vlaanderen	Provincie Oost-Vlaanderen	2789733
+ZZ.WAL.WNA	Province de Namur	Province de Namur	2790469
+ZZ.WAL.WLX	Province du Luxembourg	Province du Luxembourg	2791993
+ZZ.VLG.VLI	Provincie Limburg	Provincie Limburg	2792347
+ZZ.WAL.WLG	Province de Liège	Province de Liege	2792411
+ZZ.WAL.WHT	Province du Hainaut	Province du Hainaut	2796741
+ZZ.VLG.VAN	Provincie Antwerpen	Provincie Antwerpen	2803136
+ZZ.VLG.VBR	Provincie Vlaams-Brabant	Provincie Vlaams-Brabant	3333250
+ZZ.WAL.WBR	Province du Brabant Wallon	Province du Brabant Wallon	3333251
+ZZ.BRU.BRU	Bruxelles-Capitale	Bruxelles-Capitale	6693370

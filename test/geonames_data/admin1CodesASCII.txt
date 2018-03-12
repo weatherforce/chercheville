@@ -1,0 +1,3 @@
+ZZ.BRU	Brussels Capital	Brussels Capital	2800867
+ZZ.WAL	Wallonia	Wallonia	3337387
+ZZ.VLG	Flanders	Flanders	3337388
