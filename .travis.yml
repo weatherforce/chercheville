@@ -1,9 +1,15 @@
 language: elixir
+sudo: required
 
 services:
   - postgresql
 
+addons:
+  postgresql: 9.6
+
 before_script:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y postgresql-9.6-postgis-2.4
   - psql -U postgres --command 'CREATE DATABASE cities_test OWNER postgres' -U postgres
   - psql -U postgres --command 'CREATE EXTENSION postgis' --dbname cities_test
   - psql -U postgres --command "ALTER USER \"postgres\" WITH PASSWORD 'postgres'" -U postgres;
