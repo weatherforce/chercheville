@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/weatherforce/chercheville.svg?branch=master)](https://travis-ci.org/weatherforce/chercheville)
+
 # ChercheVille
 
 An Elixir service for finding cities.
