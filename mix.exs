@@ -29,7 +29,8 @@ defmodule ChercheVille.Mixfile do
       {:httpotion, "~> 3.0"},
       {:csv, "~> 2.0.0"},
       {:geo_postgis, "~> 1.0"},
-      {:excoveralls, "~> 0.8", only: :test}
+      {:excoveralls, "~> 0.8", only: :test},
+      {:mox, "~> 0.3", only: :test},
     ]
   end
 end

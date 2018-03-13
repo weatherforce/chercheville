@@ -10,4 +10,5 @@ config :chercheville, ChercheVille.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :chercheville,
-  data_dir: Path.join([File.cwd!(), "test", "geonames_data"]) <> "/"
+  data_dir: Path.join([File.cwd!(), "test", "geonames_data"]) <> "/",
+  fetcher: ChercheVille.FetcherMock

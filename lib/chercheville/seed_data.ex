@@ -26,6 +26,8 @@ defmodule ChercheVille.SeedData do
       modification_date 
     }
 
+  @fetcher Application.get_env(:chercheville, :fetcher)
+
   defp data_dir do
     Application.get_env(:chercheville, :data_dir, "./geonames_data/")
   end
@@ -38,7 +40,7 @@ defmodule ChercheVille.SeedData do
     else
       File.mkdir(data_dir())
 
-      HTTPotion.start()
+      @fetcher.start()
 
       fetch_file("admin1CodesASCII.txt")
       fetch_file("admin2Codes.txt")
@@ -58,7 +60,7 @@ defmodule ChercheVille.SeedData do
     if not File.exists?(destination_filename) do
       url = @base_url <> filename
       IO.puts("Download #{url}")
-      %HTTPotion.Response{body: body, status_code: 200} = HTTPotion.get(url)
+      %HTTPotion.Response{body: body, status_code: 200} = @fetcher.get(url)
       File.write(destination_filename, body)
     else
       IO.puts("#{destination_filename} already exists")

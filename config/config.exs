@@ -10,6 +10,7 @@ config :chercheville, ChercheVille.Repo,
   password: "postgres",
   hostname: "localhost"
 config :chercheville, ecto_repos: [ChercheVille.Repo]
+config :chercheville, fetcher: ChercheVille.HTTPFetcher
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
