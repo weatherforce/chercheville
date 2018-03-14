@@ -29,7 +29,7 @@ defmodule ChercheVille.SeedData do
       modification_date 
     }
 
-  @fetcher Application.get_env(:chercheville, :fetcher)
+  @fetcher Application.get_env(:chercheville, :fetcher, ChercheVille.HTTPFetcher)
 
   defp data_dir do
     Application.get_env(:chercheville, :data_dir, "./geonames_data/")
