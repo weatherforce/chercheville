@@ -4,8 +4,4 @@
 
 An Elixir service for finding cities.
 
-* full text search
-* nearest to coordinates
-
-
 Documentation: https://hexdocs.pm/chercheville/
