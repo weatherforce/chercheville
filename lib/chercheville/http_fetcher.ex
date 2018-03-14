@@ -3,6 +3,7 @@ defmodule ChercheVille.HTTPFetcher do
   def start do
     HTTPotion.start()
   end
+
   def get(url) do
     HTTPotion.get(url)
   end

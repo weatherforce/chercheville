@@ -1,4 +1,4 @@
 defmodule ChercheVille.Fetcher do
   @callback start() :: :ok
-  @callback get(url :: String.t) :: HTTPotion.Response.t
+  @callback get(url :: String.t()) :: HTTPotion.Response.t()
 end

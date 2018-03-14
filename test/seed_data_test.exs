@@ -6,10 +6,12 @@ defmodule SeedDataTest do
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(ChercheVille.Repo)
-    on_exit fn ->
+
+    on_exit(fn ->
       File.rm(fetched_file("YY.zip"))
       File.rm(fetched_file("YY.txt"))
-    end
+    end)
+
     verify_on_exit!()
   end
 
@@ -24,12 +26,14 @@ defmodule SeedDataTest do
   test "import data" do
     SeedData.import_data(["ZZ"])
 
-    query = from(
-      c in ChercheVille.City,
-      where: c.name == "Brussels"
-    )
-    brussels = query |> ChercheVille.Repo.one
-    assert %ChercheVille.City{population: 1019022} = brussels
+    query =
+      from(
+        c in ChercheVille.City,
+        where: c.name == "Brussels"
+      )
+
+    brussels = query |> ChercheVille.Repo.one()
+    assert %ChercheVille.City{population: 1_019_022} = brussels
   end
 
   test "fetch data" do

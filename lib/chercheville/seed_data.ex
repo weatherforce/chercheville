@@ -35,6 +35,7 @@ defmodule ChercheVille.SeedData do
   def fetch_data(country_codes \\ []) do
     load_config()
     country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
+
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
@@ -45,7 +46,7 @@ defmodule ChercheVille.SeedData do
       fetch_file("admin1CodesASCII.txt")
       fetch_file("admin2Codes.txt")
 
-      Enum.each(country_codes, fn(country_code) ->
+      Enum.each(country_codes, fn country_code ->
         fetch_file(country_code <> ".zip") |> unzip
       end)
     end
@@ -57,6 +58,7 @@ defmodule ChercheVille.SeedData do
 
   defp fetch_file(filename) do
     destination_filename = data_dir() <> filename
+
     if not File.exists?(destination_filename) do
       url = @base_url <> filename
       IO.puts("Download #{url}")
@@ -65,6 +67,7 @@ defmodule ChercheVille.SeedData do
     else
       IO.puts("#{destination_filename} already exists")
     end
+
     destination_filename
   end
 
@@ -72,6 +75,7 @@ defmodule ChercheVille.SeedData do
     load_config()
     start_repo()
     country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
+
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
@@ -88,6 +92,7 @@ defmodule ChercheVille.SeedData do
 
   defp import_country(country_code, admin1_codes, admin2_codes) do
     filename = data_dir() <> country_code <> ".txt"
+
     read_csv(filename)
     |> filter_cities
     |> filter_has_admin2
@@ -104,10 +109,11 @@ defmodule ChercheVille.SeedData do
       {:ok, _} -> true
       _ -> false
     end)
-    |> Stream.map(fn({:ok, row}) ->
+    |> Stream.map(fn {:ok, row} ->
       {latitude, _} = Float.parse(row["latitude"])
       {longitude, _} = Float.parse(row["longitude"])
-      point = %Geo.Point{ coordinates: {latitude, longitude}, srid: 4326}
+      point = %Geo.Point{coordinates: {latitude, longitude}, srid: 4326}
+
       row
       |> Map.put("geom", point)
       |> Map.delete("latitude")
@@ -126,22 +132,23 @@ defmodule ChercheVille.SeedData do
 
   defp filter_out_sections_of_populated_places(rows) do
     digit_regexp = ~r/\d/
-    rows |> Stream.reject(&(
+
+    rows
+    |> Stream.reject(
       # Code reference: http://www.geonames.org/export/codes.html
-      &1["feature_code"] in ["PPLX", "PPLH"]
-      or Regex.match?(digit_regexp, &1["name"])
-    ))
+      &(&1["feature_code"] in ["PPLX", "PPLH"] or Regex.match?(digit_regexp, &1["name"]))
+    )
   end
 
   defp insert_into_database(cities) do
-    Enum.each(cities, fn(city) ->
+    Enum.each(cities, fn city ->
       changeset = ChercheVille.City.changeset(%ChercheVille.City{}, city)
       ChercheVille.Repo.insert(changeset)
     end)
   end
 
   defp add_admin1_names(rows, country_code, admin1_codes) do
-    Stream.map(rows, fn(row) ->
+    Stream.map(rows, fn row ->
       key = "#{country_code}.#{row["admin1_code"]}"
       admin1_name = admin1_codes[key]["name"]
       Map.put(row, "admin1_name", admin1_name)
@@ -149,7 +156,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp add_admin2_names(rows, country_code, admin2_codes) do
-    Stream.map(rows, fn(row) ->
+    Stream.map(rows, fn row ->
       key = "#{country_code}.#{row["admin1_code"]}.#{row["admin2_code"]}"
       admin2_name = admin2_codes[key]["name"]
       Map.put(row, "admin2_name", admin2_name)
@@ -169,4 +176,3 @@ defmodule ChercheVille.SeedData do
 
   defp start_repo, do: Enum.each(@start_apps, &Application.ensure_all_started/1)
 end
-

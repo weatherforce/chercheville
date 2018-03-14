@@ -8,7 +8,8 @@ defmodule ChercheVille.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      ChercheVille.Repo, ChercheVille.Search
+      ChercheVille.Repo,
+      ChercheVille.Search
       # Starts a worker by calling: ChercheVille.Worker.start_link(arg)
       # {ChercheVille.Worker, arg},
     ]

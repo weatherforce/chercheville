@@ -6,10 +6,15 @@ defmodule ChercheVille.Mixfile do
       app: :chercheville,
       version: "0.1.0",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -31,6 +36,7 @@ defmodule ChercheVille.Mixfile do
       {:geo_postgis, "~> 1.0"},
       {:excoveralls, "~> 0.8", only: :test},
       {:mox, "~> 0.3", only: :test},
+      {:credo, "~> 0.3", only: [:dev, :test]}
     ]
   end
 end
