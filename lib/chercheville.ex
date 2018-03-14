@@ -1,7 +1,7 @@
 defmodule ChercheVille do
   @moduledoc """
   ChercheVille is an Elixir service allowing to search cities based on data
-  from [GeoNames](http://www.geonames.org/). It uses PostgreSQL as its database.
+  from [GeoNames](http://www.geonames.org/).
 
   ## Adding ChercheVille to your project
   
@@ -13,7 +13,23 @@ defmodule ChercheVille do
         ]
       end
 
-  ## Populating the database
+  ## Preparing the database
+
+  ChercheVille requires a PostgreSQL database with the PostGIS extension enabled.
+  Configure its database access in `config/config.exs`:
+
+      config :chercheville, ChercheVille.Repo,
+        adapter: Ecto.Adapters.Postgres,
+        types: ChercheVille.PostgresTypes,
+        database: "my_db",
+        username: "my_username",
+        password: "my_password",
+        hostname: "localhost"
+      config :chercheville, ecto_repos: [ChercheVille.Repo]
+
+  Update your database schema. This will add a table named `cities`:
+
+      $ mix ecto.migrate -r ChercheVille.Repo
 
   A couple of mix tasks are available to populate the database. Each task takes
   a list of [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
@@ -21,14 +37,11 @@ defmodule ChercheVille do
 
   To fetch data files from geonames.org and store them locally:
 
-      $ mix fetch_data RU US CN
+      $ mix fetch_data FR BE ES
 
   To load data from those files into our database:
 
-      $ mix load_data RU US CN
-
-  By default, ChercheVille tries to connect to a database named `cities` on localhost
-  with user `postgres` and password `postgres`.
+      $ mix load_data FR BE ES
 
   ## Searching for cities.
   
