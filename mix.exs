@@ -1,5 +1,6 @@
 defmodule ChercheVille.Mixfile do
   use Mix.Project
+  @repo_url "https://gitlab.com/weatherforce-platform/chercheville"
 
   def project do
     [
@@ -7,6 +8,7 @@ defmodule ChercheVille.Mixfile do
       description: "Service allowing to search cities based on data from GeoNames",
       version: "0.1.1",
       elixir: "~> 1.6",
+      source_url: @repo_url,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
@@ -25,7 +27,7 @@ defmodule ChercheVille.Mixfile do
     [
       maintainers: ["Alex Marandon"],
       links: %{
-        "GitHub" => "https://gitlab.com/weatherforce-platform/chercheville",
+        "GitHub" => @repo_url,
         "WeatherForce" => "http://weatherforce.org"
       },
       licenses: ["MIT"],
