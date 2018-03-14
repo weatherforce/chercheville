@@ -37,11 +37,11 @@ defmodule ChercheVille do
 
   To fetch data files from geonames.org and store them locally:
 
-      $ mix fetch_data FR BE ES
+      $ mix chercheville.fetch_data FR BE ES
 
   To load data from those files into our database:
 
-      $ mix load_data FR BE ES
+      $ mix chercheville.load_data FR BE ES
 
   ## Searching for cities.
   
