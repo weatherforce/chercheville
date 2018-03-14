@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.FetchData do
+defmodule Mix.Tasks.Chercheville.FetchData do
   @moduledoc """
   Mix task for fetching data files from geonames.
   """

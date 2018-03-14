@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.ImportData do
+defmodule Mix.Tasks.Chercheville.ImportData do
   @moduledoc """
   Mix task for importing data from geonames files into our database.
   """
