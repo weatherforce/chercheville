@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.ImportData do
+  @moduledoc """
+  Mix task for importing data from geonames files into our database.
+  """
   use Mix.Task
 
   @shortdoc """

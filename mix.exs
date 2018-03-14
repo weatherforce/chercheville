@@ -14,7 +14,8 @@ defmodule ChercheVille.Mixfile do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
-      ]
+      ],
+      docs: [main: "ChercheVille"]
     ]
   end
 
@@ -36,7 +37,9 @@ defmodule ChercheVille.Mixfile do
       {:geo_postgis, "~> 1.0"},
       {:excoveralls, "~> 0.8", only: :test},
       {:mox, "~> 0.3", only: :test},
-      {:credo, "~> 0.3", only: [:dev, :test]}
+      {:credo, "~> 0.3", only: [:dev, :test]},
+      {:earmark, "~> 0.1", only: :dev},
+      {:ex_doc, "~> 0.11", only: :dev}
     ]
   end
 end

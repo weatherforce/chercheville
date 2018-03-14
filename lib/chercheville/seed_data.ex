@@ -1,4 +1,7 @@
 defmodule ChercheVille.SeedData do
+  @moduledoc """
+  Loading data from the geonames text files into our database.
+  """
   import Mix.Ecto
 
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
@@ -32,6 +35,9 @@ defmodule ChercheVille.SeedData do
     Application.get_env(:chercheville, :data_dir, "./geonames_data/")
   end
 
+  @doc """
+  Fetch data for countries specified by `country_codes` and store it locally.
+  """
   def fetch_data(country_codes \\ []) do
     load_config()
     country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
@@ -71,6 +77,10 @@ defmodule ChercheVille.SeedData do
     destination_filename
   end
 
+  @doc """
+  Load cities data from files that have been previously fetched with
+  `fetch_data/1` and insert this data into our database.
+  """
   def import_data(country_codes \\ []) do
     load_config()
     start_repo()

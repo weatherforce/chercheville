@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.FetchData do
+  @moduledoc """
+  Mix task for fetching data files from geonames.
+  """
   use Mix.Task
 
   @shortdoc "Fetch data files from geonames.org"

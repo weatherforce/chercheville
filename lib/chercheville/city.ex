@@ -1,4 +1,7 @@
 defmodule ChercheVille.City do
+  @moduledoc """
+  Ecto schema representing a city.
+  """
   use Ecto.Schema
 
   @primary_key {:geonameid, :integer, autogenerate: false}

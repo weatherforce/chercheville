@@ -1,4 +1,7 @@
 defmodule ChercheVille.Search do
+  @moduledoc """
+  A GenServer providing city search capabilities.
+  """
   use GenServer
 
   def init(args) do
@@ -7,9 +10,21 @@ defmodule ChercheVille.Search do
 
   def start_link(state \\ []), do: GenServer.start_link(__MODULE__, state, name: __MODULE__)
 
+  @doc """
+  Search for cities matching `search_string`.
+
+  Returns a list of `ChercheVille.City` records no larger than `limit`.
+  Equally relevant cities get sorted by descending population.
+  """
   def text(search_string, limit \\ 10) when is_binary(search_string),
     do: GenServer.call(__MODULE__, {:text, search_string, limit})
 
+  @doc """
+  Search cities nearest to `latitude` and `longitude`.
+
+  Returns a list of `ChercheVille.City` records no larger than `limit`
+  and sorted by distance from `latitude` and `longitude`.
+  """
   def coordinates(latitude, longitude, limit \\ 10)
       when is_number(latitude) and is_number(longitude),
       do: GenServer.call(__MODULE__, {:coordinates, latitude, longitude, limit})
