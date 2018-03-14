@@ -4,10 +4,12 @@ defmodule ChercheVille.Mixfile do
   def project do
     [
       app: :chercheville,
-      version: "0.1.0",
-      elixir: "~> 1.5",
+      description: "Service allowing to search cities based on data from GeoNames",
+      version: "0.1.1",
+      elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      package: package(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -16,6 +18,17 @@ defmodule ChercheVille.Mixfile do
         "coveralls.html": :test
       ],
       docs: [main: "ChercheVille"]
+    ]
+  end
+
+  def package do
+    [
+      maintainers: ["Alex Marandon"],
+      links: %{
+        "GitHub" => "https://gitlab.com/weatherforce-platform/chercheville",
+        "WeatherForce" => "http://weatherforce.org"
+      },
+      licenses: ["MIT"],
     ]
   end
 
