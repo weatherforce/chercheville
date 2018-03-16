@@ -97,13 +97,20 @@ defmodule ChercheVille.SeedData do
   end
 
   defp import_countries(country_codes, admin1_codes, admin2_codes) do
-    Enum.each(country_codes, &import_country(&1, admin1_codes, admin2_codes))
+    for country_code <- country_codes do
+      import_country(country_code, admin1_codes, admin2_codes)
+    end
   end
 
   defp import_country(country_code, admin1_codes, admin2_codes) do
     filename = data_dir() <> country_code <> ".txt"
 
-    read_csv(filename)
+    places = stream_csv(filename)
+    admin1_codes = localize_admin_names(admin1_codes, places)
+
+    places = stream_csv(filename)
+
+    places
     |> filter_cities
     |> filter_has_admin2
     |> filter_out_sections_of_populated_places
@@ -112,7 +119,33 @@ defmodule ChercheVille.SeedData do
     |> insert_into_database
   end
 
-  defp read_csv(filename) do
+  defp localize_admin_names(admin_codes, places) do
+    admin_geonameids = geonameids_from_admin_code_map(admin_codes)
+    admin_places_map = places_map_for_geonameids(places, admin_geonameids)
+
+    for {code, attributes} <- admin_codes, into: %{} do
+      geonameid = attributes["geonameid"]
+      admin_place = admin_places_map[geonameid]
+      attributes = if admin_place do
+        Map.put(attributes, "name", admin_place["name"])
+      else
+        attributes
+      end
+      {code, attributes}
+    end
+  end
+
+  defp geonameids_from_admin_code_map(admin_codes) do
+    for {_code, attributes} <- admin_codes, do: attributes["geonameid"]
+  end
+
+  defp places_map_for_geonameids(places, geonameids) do
+    for place <- places, place["geonameid"] in geonameids, into: %{} do
+      {place["geonameid"], place}
+    end
+  end
+
+  defp stream_csv(filename) do
     File.stream!(filename)
     |> CSV.decode(separator: ?\t, headers: @places_headers)
     |> Stream.filter(fn

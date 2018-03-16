@@ -23,17 +23,23 @@ defmodule SeedDataTest do
     Path.join([Application.get_env(:chercheville, :data_dir), filename])
   end
 
-  test "import data" do
-    SeedData.import_data(["ZZ"])
+  describe "import data" do
+    test "import data" do
+      SeedData.import_data(["ZZ"])
 
-    query =
-      from(
-        c in ChercheVille.City,
-        where: c.name == "Brussels"
-      )
+      query = from(c in ChercheVille.City, where: c.name == "Brussels")
 
-    brussels = query |> ChercheVille.Repo.one()
-    assert %ChercheVille.City{population: 1_019_022} = brussels
+      brussels = query |> ChercheVille.Repo.one()
+      assert %ChercheVille.City{population: 1_019_022} = brussels
+    end
+    test "should use local admin1 name" do
+      SeedData.import_data(["ZZ"])
+
+      query = from(c in ChercheVille.City, where: c.name == "Brussels")
+
+      brussels = query |> ChercheVille.Repo.one()
+      assert Map.get(brussels, :admin1_name) == "Bruxelles-Capitale"
+    end
   end
 
   test "fetch data" do
