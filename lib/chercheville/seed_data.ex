@@ -184,10 +184,19 @@ defmodule ChercheVille.SeedData do
   end
 
   defp insert_into_database(cities) do
-    Enum.each(cities, fn city ->
-      changeset = ChercheVille.City.changeset(%ChercheVille.City{}, city)
-      ChercheVille.Repo.insert(changeset)
-    end)
+    columns = [
+      "geonameid", "name", "asciiname", "alternatenames", "geom", "country_code",
+      "admin1_code", "admin2_code", "admin1_name", "admin2_name", "population"
+    ]
+    lines = for city <- cities do
+      values = for column <- columns, do: city[column]
+      Enum.join(values, "\t") <> "\n"
+    end
+
+    sql_columns = Enum.join(columns, ", ")
+    sql = "COPY cities(#{sql_columns}) FROM STDIN"
+    stream = Ecto.Adapters.SQL.stream(ChercheVille.Repo, sql)
+    ChercheVille.Repo.transaction(fn -> Enum.into(lines, stream) end)
   end
 
   defp add_admin1_names(rows, country_code, admin1_codes) do
