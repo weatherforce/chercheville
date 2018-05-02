@@ -36,7 +36,10 @@ defmodule ChercheVille.Search do
       query =
         Ecto.Query.from(
           city in ChercheVille.City,
-          where: ilike(city.name, ^"#{search_string}%"),
+          where: ilike(
+            fragment("unaccent(?)", city.name),
+            fragment("unaccent(?)", ^"#{search_string}%")
+          ),
           limit: ^limit,
           order_by: [desc: city.population]
         )
