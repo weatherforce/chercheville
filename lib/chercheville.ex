@@ -15,8 +15,12 @@ defmodule ChercheVille do
 
   ## Preparing the database
 
-  ChercheVille requires a PostgreSQL database with the PostGIS extension enabled.
-  Configure its database access in `config/config.exs`:
+  ChercheVille requires a PostgreSQL database with these extensions enabled:
+
+    * postgis
+    * unaccent
+
+  Configure database access in `config/config.exs`:
 
       config :chercheville, ChercheVille.Repo,
         adapter: Ecto.Adapters.Postgres,
