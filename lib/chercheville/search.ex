@@ -33,12 +33,13 @@ defmodule ChercheVille.Search do
     require Ecto.Query
 
     spawn(fn ->
+      tsquery_string = tsquery(search_string)
       query =
         Ecto.Query.from(
           city in ChercheVille.City,
-          where: ilike(
-            fragment("unaccent(?)", city.name),
-            fragment("unaccent(?)", ^"#{search_string}%")
+          where: fragment(
+            "to_tsquery(unaccent(?)) @@ to_tsvector(unaccent(?))",
+            ^tsquery_string, city.name
           ),
           limit: ^limit,
           order_by: [desc: city.population]
@@ -49,6 +50,14 @@ defmodule ChercheVille.Search do
     end)
 
     {:noreply, state}
+  end
+
+  defp tsquery(search_string) do
+    # Prepare PostgreSQL full text search query
+    search_string
+    |> String.split()           # split search expression into words
+    |> Enum.map(&(&1 <> ":*"))  # prefix matching
+    |> Enum.join(" <-> ")       # join with "followed by" operator
   end
 
   def handle_call({:coordinates, latitude, longitude, limit}, from, state) do

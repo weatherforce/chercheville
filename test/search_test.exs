@@ -45,6 +45,24 @@ defmodule SearchTest do
     assert geonameid == 123_930_305
   end
 
+  test "test complete name words" do
+    insert_city(123_930_305, "Saint-Juéry")
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.text("saint juéry")
+    assert geonameid == 123_930_305
+  end
+
+  test "test partial name words" do
+    insert_city(123_930_305, "Saint-Juéry")
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.text("saint jue")
+    assert geonameid == 123_930_305
+  end
+
+  test "test complte name with hyphen" do
+    insert_city(123_930_305, "Saint-Juéry")
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.text("saint-juéry")
+    assert geonameid == 123_930_305
+  end
+
   test "nearest to coordinates" do
     insert_city(123_930_305, "foo", 2, 20)
     insert_city(123_930_306, "bar", 42, 0)
