@@ -38,7 +38,7 @@ defmodule ChercheVille.Search do
         Ecto.Query.from(
           city in ChercheVille.City,
           where: fragment(
-            "to_tsquery(unaccent(?)) @@ to_tsvector(unaccent(?))",
+            "to_tsquery(unaccent(?)) @@ gin_fts_fct(?)",
             ^tsquery_string, city.name
           ),
           limit: ^limit,
@@ -50,14 +50,6 @@ defmodule ChercheVille.Search do
     end)
 
     {:noreply, state}
-  end
-
-  defp tsquery(search_string) do
-    # Prepare PostgreSQL full text search query
-    search_string
-    |> String.split()           # split search expression into words
-    |> Enum.map(&(&1 <> ":*"))  # prefix matching
-    |> Enum.join(" <-> ")       # join with "followed by" operator
   end
 
   def handle_call({:coordinates, latitude, longitude, limit}, from, state) do
@@ -78,6 +70,14 @@ defmodule ChercheVille.Search do
     end)
 
     {:noreply, state}
+  end
+
+  defp tsquery(search_string) do
+    # Prepare PostgreSQL full text search query
+    search_string
+    |> String.split()           # split search expression into words
+    |> Enum.map(&(&1 <> ":*"))  # prefix matching
+    |> Enum.join(" <-> ")       # join with "followed by" operator
   end
 
   defp geom_to_coordinates(cities) do
