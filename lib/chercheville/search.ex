@@ -3,6 +3,7 @@ defmodule ChercheVille.Search do
   A GenServer providing city search capabilities.
   """
   use GenServer
+  require Ecto.Query
 
   def init(args) do
     {:ok, args}
@@ -30,19 +31,27 @@ defmodule ChercheVille.Search do
       do: GenServer.call(__MODULE__, {:coordinates, latitude, longitude, limit})
 
   def handle_call({:text, search_string, limit}, from, state) do
-    require Ecto.Query
 
     spawn(fn ->
-      tsquery_string = tsquery(search_string)
       query =
         Ecto.Query.from(
           city in ChercheVille.City,
-          where: fragment(
-            "to_tsquery(unaccent(?)) @@ gin_fts_fct(?)",
-            ^tsquery_string, city.name
-          ),
+          where:
+            fragment(
+              "immutable_unaccent(?) % immutable_unaccent(?)",
+              ^search_string,
+              city.name
+            ),
           limit: ^limit,
-          order_by: [desc: city.population]
+          order_by: [
+            desc:
+              fragment(
+                "similarity(immutable_unaccent(?), immutable_unaccent(?))",
+                ^search_string,
+                city.name
+              ),
+            desc: city.population
+          ]
         )
 
       cities = query |> ChercheVille.Repo.all() |> geom_to_coordinates
@@ -53,7 +62,6 @@ defmodule ChercheVille.Search do
   end
 
   def handle_call({:coordinates, latitude, longitude, limit}, from, state) do
-    require Ecto.Query
     import Geo.PostGIS
     point = %Geo.Point{coordinates: {latitude, longitude}, srid: 4326}
 
@@ -70,14 +78,6 @@ defmodule ChercheVille.Search do
     end)
 
     {:noreply, state}
-  end
-
-  defp tsquery(search_string) do
-    # Prepare PostgreSQL full text search query
-    search_string
-    |> String.split()           # split search expression into words
-    |> Enum.map(&(&1 <> ":*"))  # prefix matching
-    |> Enum.join(" <-> ")       # join with "followed by" operator
   end
 
   defp geom_to_coordinates(cities) do

@@ -17,8 +17,9 @@ defmodule ChercheVille do
 
   ChercheVille requires a PostgreSQL database with these extensions enabled:
 
-    * postgis
     * unaccent
+    * pg_trgm
+    * postgis
 
   Configure database access in `config/config.exs`:
 

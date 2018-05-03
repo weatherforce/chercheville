@@ -126,11 +126,14 @@ defmodule ChercheVille.SeedData do
     for {code, attributes} <- admin_codes, into: %{} do
       geonameid = attributes["geonameid"]
       admin_place = admin_places_map[geonameid]
-      attributes = if admin_place do
-        Map.put(attributes, "name", admin_place["name"])
-      else
-        attributes
-      end
+
+      attributes =
+        if admin_place do
+          Map.put(attributes, "name", admin_place["name"])
+        else
+          attributes
+        end
+
       {code, attributes}
     end
   end
@@ -185,13 +188,24 @@ defmodule ChercheVille.SeedData do
 
   defp insert_into_database(cities) do
     columns = [
-      "geonameid", "name", "asciiname", "alternatenames", "geom", "country_code",
-      "admin1_code", "admin2_code", "admin1_name", "admin2_name", "population"
+      "geonameid",
+      "name",
+      "asciiname",
+      "alternatenames",
+      "geom",
+      "country_code",
+      "admin1_code",
+      "admin2_code",
+      "admin1_name",
+      "admin2_name",
+      "population"
     ]
-    lines = for city <- cities do
-      values = for column <- columns, do: city[column]
-      Enum.join(values, "\t") <> "\n"
-    end
+
+    lines =
+      for city <- cities do
+        values = for column <- columns, do: city[column]
+        Enum.join(values, "\t") <> "\n"
+      end
 
     sql_columns = Enum.join(columns, ", ")
     sql = "COPY cities(#{sql_columns}) FROM STDIN"

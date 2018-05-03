@@ -63,6 +63,12 @@ defmodule SearchTest do
     assert geonameid == 123_930_305
   end
 
+  test "test typo" do
+    insert_city(123_930_305, "Montpellier")
+    [%{geonameid: geonameid} | _] = ChercheVille.Search.text("montpelier")
+    assert geonameid == 123_930_305
+  end
+
   test "nearest to coordinates" do
     insert_city(123_930_305, "foo", 2, 20)
     insert_city(123_930_306, "bar", 42, 0)
