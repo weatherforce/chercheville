@@ -6,7 +6,7 @@ defmodule SearchTest do
     Ecto.Adapters.SQL.Sandbox.mode(ChercheVille.Repo, {:shared, self()})
   end
 
-  defp insert_city(geonameid, name, latitude \\ 43, longitude \\ 1) do
+  defp insert_city(geonameid, name, latitude \\ 43, longitude \\ 1, country_code \\ "FR") do
     point = %Geo.Point{coordinates: {latitude, longitude}, srid: 4326}
 
     city = %{
@@ -15,7 +15,7 @@ defmodule SearchTest do
       asciiname: "Toulouse",
       alternatenames: "Touluse",
       geom: point,
-      country_code: "FR",
+      country_code: country_code,
       admin1_code: "",
       admin2_code: "",
       admin1_name: "a",
@@ -82,5 +82,27 @@ defmodule SearchTest do
     assert city[:latitude] == 2
     assert city[:longitude] == 20
     assert is_nil(city[:geom])
+  end
+
+  test "filter text search by country" do
+    insert_city(123_930_305, "foo", 2, 20, "FR")
+    insert_city(123_930_306, "foo", 2, 20, "PL")
+
+    results = ChercheVille.Search.text("foo", country_code: "FR")
+
+    assert length(results) == 1
+    [city | _] = results
+    assert city[:geonameid] == 123_930_305
+  end
+
+  test "filter coordinates search by country" do
+    insert_city(123_930_305, "foo", 2, 20, "FR")
+    insert_city(123_930_306, "foo", 2, 20, "PL")
+
+    results = ChercheVille.Search.coordinates(2, 20, country_code: "FR")
+
+    assert length(results) == 1
+    [city | _] = results
+    assert city[:geonameid] == 123_930_305
   end
 end
