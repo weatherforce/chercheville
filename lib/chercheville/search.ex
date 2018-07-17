@@ -36,6 +36,11 @@ defmodule ChercheVille.Search do
     GenServer.call(__MODULE__, {:coordinates, latitude, longitude, limit, country_code})
   end
 
+  def nearest_city_coordinates(latitude, longitude) do
+    [city | _] = ChercheVille.Search.coordinates(latitude, longitude, limit: 1)
+    {city[:latitude], city[:longitude]}
+  end
+
   def handle_call({:text, search_string, limit, country_code}, from, state) do
 
     spawn(fn ->

@@ -76,6 +76,13 @@ defmodule SearchTest do
     assert geonameid == 123_930_306
   end
 
+  test "find coordinates of nearest city" do
+    insert_city(123_930_305, "foo", 2, 20)
+    insert_city(123_930_306, "bar", 42, 0)
+    coordinates = ChercheVille.Search.nearest_city_coordinates(43, 1)
+    assert coordinates == {42, 0}
+  end
+
   test "geom converted to latitude and longitude" do
     insert_city(123_930_305, "foo", 2, 20)
     [city | _] = ChercheVille.Search.text("foo")
