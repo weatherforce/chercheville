@@ -2,8 +2,6 @@ defmodule ChercheVille.SeedData do
   @moduledoc """
   Loading data from the geonames text files into our database.
   """
-  import Mix.Ecto
-
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
 
   @base_url "http://download.geonames.org/export/dump/"
@@ -89,7 +87,7 @@ defmodule ChercheVille.SeedData do
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      ensure_started(ChercheVille.Repo, [])
+      Mix.Task.run "app.start"
       admin1_codes = read_admin_codes("admin1CodesASCII.txt")
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)

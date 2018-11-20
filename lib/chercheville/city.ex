@@ -10,7 +10,7 @@ defmodule ChercheVille.City do
     field(:name, :string)
     field(:asciiname, :string)
     field(:alternatenames, :string)
-    field(:geom, Geo.Geometry)
+    field(:geom, Geo.PostGIS.Geometry)
     field(:country_code, :string)
     field(:admin1_code, :string)
     field(:admin2_code, :string)
