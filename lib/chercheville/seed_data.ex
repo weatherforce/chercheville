@@ -137,7 +137,9 @@ defmodule ChercheVille.SeedData do
   end
 
   defp geonameids_from_admin_code_map(admin_codes) do
-    for {_code, attributes} <- admin_codes, do: attributes["geonameid"]
+    for {_code, attributes} <- admin_codes, into: MapSet.new() do
+      attributes["geonameid"]
+    end
   end
 
   defp places_map_for_geonameids(places, geonameids) do
