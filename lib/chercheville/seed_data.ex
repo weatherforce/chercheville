@@ -147,7 +147,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp stream_csv(filename) do
-    File.stream!(filename)
+    open_binstream(filename)
     |> CSV.decode(separator: ?\t, headers: @places_headers)
     |> Stream.filter(fn
       {:ok, _} -> true
@@ -228,12 +228,24 @@ defmodule ChercheVille.SeedData do
   end
 
   defp read_admin_codes(filename) do
-    File.stream!(data_dir() <> filename)
+    open_binstream(data_dir() <> filename)
     |> CSV.decode(separator: ?\t, headers: ["code", "name", "asciiname", "geonameid"])
     |> Enum.reduce(%{}, fn
       {:ok, row}, map -> Map.put(map, row["code"], row)
       {:error, _}, map -> map
     end)
+  end
+
+  defp open_binstream(filename) do
+    # Instead of creating a stream directly with File.stream!/1, we use
+    # IO.binstream/2 to create a raw binary stream, which makes it a lot
+    # faster.
+    #
+    # For example, to import data for Germany it went from about half an hour
+    # to about 2 minutes and half.
+    #
+    # See https://elixirforum.com/t/help-with-performance-file-io/802/36
+    File.open!(filename) |> IO.binstream(:line)
   end
 
   defp load_config, do: Application.load(:chercheville)
