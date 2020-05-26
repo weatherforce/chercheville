@@ -1,5 +1,5 @@
 defmodule SeedDataTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import Ecto.Query, only: [from: 2]
   import Mox
   alias ChercheVille.SeedData
