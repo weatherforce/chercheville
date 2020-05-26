@@ -50,6 +50,7 @@ defmodule ChercheVille.Mixfile do
       {:httpotion, "~> 3.1"},
       {:csv, "~> 2.3"},
       {:geo_postgis, "~> 3.3"},
+      {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.12", only: :test},
       {:mox, "~> 0.5", only: :test},
       {:credo, "~> 1.4", only: [:dev, :test]},

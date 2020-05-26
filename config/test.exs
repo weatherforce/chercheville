@@ -12,3 +12,5 @@ config :chercheville, ChercheVille.Repo,
 config :chercheville,
   data_dir: Path.join([File.cwd!(), "test", "geonames_data"]) <> "/",
   fetcher: ChercheVille.FetcherMock
+
+config :chercheville, http_port: 4001
