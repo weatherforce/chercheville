@@ -45,16 +45,16 @@ defmodule ChercheVille.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
-      {:postgrex, "~> 0.11"},
-      {:httpotion, "~> 3.0"},
-      {:csv, "~> 2.0.0"},
-      {:geo_postgis, "~> 2.0"},
-      {:excoveralls, "~> 0.8", only: :test},
-      {:mox, "~> 0.3", only: :test},
-      {:credo, "~> 0.3", only: [:dev, :test]},
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.11", only: :dev}
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, ">= 0.0.0"},
+      {:httpotion, "~> 3.1"},
+      {:csv, "~> 2.3"},
+      {:geo_postgis, "~> 3.3"},
+      {:excoveralls, "~> 0.12", only: :test},
+      {:mox, "~> 0.5", only: :test},
+      {:credo, "~> 1.4", only: [:dev, :test]},
+      {:earmark, "~> 1.4", only: :dev},
+      {:ex_doc, "~> 0.22", only: :dev}
     ]
   end
 end
