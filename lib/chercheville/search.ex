@@ -2,14 +2,7 @@ defmodule ChercheVille.Search do
   @moduledoc """
   A GenServer providing city search capabilities.
   """
-  use GenServer
   import Ecto.Query, only: [from: 2]
-
-  def init(args) do
-    {:ok, args}
-  end
-
-  def start_link(state \\ []), do: GenServer.start_link(__MODULE__, state, name: __MODULE__)
 
   @doc """
   Search for cities matching `search_string`.
