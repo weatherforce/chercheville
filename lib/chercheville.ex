@@ -5,18 +5,18 @@ defmodule ChercheVille do
 
   ## Preparing the database
 
-  ChercheVille requires a PostgreSQL database with these extensions enabled:
+  ChercheVille requires a PostgreSQL database with some extensions enabled. Login to cities database and then run:
 
-      cities=# CREATE EXTENSION postgis;
-      cities=# CREATE EXTENSION unaccent;
-      cities=# CREATE EXTENSION pg_trgm;
+      CREATE EXTENSION postgis;
+      CREATE EXTENSION unaccent;
+      CREATE EXTENSION pg_trgm;
 
   Configure database access in `config/config.exs`:
 
       config :chercheville, ChercheVille.Repo,
         adapter: Ecto.Adapters.Postgres,
         types: ChercheVille.PostgresTypes,
-        database: "my_db",
+        database: "cities",
         username: "my_username",
         password: "my_password",
         hostname: "localhost"
@@ -53,6 +53,10 @@ defmodule ChercheVille do
   Two search functions are available. Textual search with `ChercheVille.Search.text/1`
   and spatial search with `ChercheVille.Search.coordinates/2`.
 
+  Note that you can start the application with an interactive shell using:
+
+      iex -S mix run --no-halt
+
   ### Textual search example
 
       ChercheVille.Search.text("toulouse")
@@ -60,5 +64,12 @@ defmodule ChercheVille do
   ### Spatial search example
   
       ChercheVille.Search.coordinates(43.6, 1.44)
+
+  ## Running tests
+  
+  In order to run tests you'll need to create the `cities_test` database with the same extensions as the dev database (see [Preparing the database](#module-preparing-the-database)) and run the migrations in the `test` environment:
+
+      $ MIX_ENV=test mix ecto.migrate
+      $ mix test
   """
 end
