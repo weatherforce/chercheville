@@ -3,23 +3,13 @@ defmodule ChercheVille do
   ChercheVille is an Elixir service allowing to search cities based on data
   from [GeoNames](http://www.geonames.org/).
 
-  ## Adding ChercheVille to your project
-  
-
-      defp deps do
-        [
-          # ...
-          {:chercheville, "~> 0.1.0"}
-        ]
-      end
-
   ## Preparing the database
 
   ChercheVille requires a PostgreSQL database with these extensions enabled:
 
-    * unaccent
-    * pg_trgm
-    * postgis
+      cities=# CREATE EXTENSION postgis;
+      cities=# CREATE EXTENSION unaccent;
+      cities=# CREATE EXTENSION pg_trgm;
 
   Configure database access in `config/config.exs`:
 
@@ -34,11 +24,13 @@ defmodule ChercheVille do
 
   Update your database schema. This will add a table named `cities`:
 
-      $ mix ecto.migrate -r ChercheVille.Repo
+      $ mix ecto.migrate
 
   A couple of mix tasks are available to populate the database. Each task takes
   a list of [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
   as arguments.
+
+  ## Importing data
 
   To fetch data files from geonames.org and store them locally:
 
@@ -46,12 +38,20 @@ defmodule ChercheVille do
 
   To load data from those files into our database:
 
-      $ mix chercheville.load_data FR BE ES
+      $ mix chercheville.import_data FR BE ES
 
-  ## Searching for cities.
+  ## Starting web service
+
+  Start the web server:
+
+      mix run --no-halt
+
+  Then visiting the http://localhost:4000 should show a list of available endpoints.
+
+  ## Calling Elixir functions directly
   
-  Two search modes are available. Textual search with `ChercheVille.Search.text/1`
-  and spatial search with `ChercheVille.Search.coordinates/1`.
+  Two search functions are available. Textual search with `ChercheVille.Search.text/1`
+  and spatial search with `ChercheVille.Search.coordinates/2`.
 
   ### Textual search example
 
