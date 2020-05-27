@@ -49,6 +49,7 @@ defmodule ChercheVille.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:httpotion, "~> 3.1"},
       {:csv, "~> 2.3"},
+      {:jason, "~> 1.2"},
       {:geo_postgis, "~> 3.3"},
       {:plug_cowboy, "~> 2.0"},
       {:excoveralls, "~> 0.12", only: :test},
