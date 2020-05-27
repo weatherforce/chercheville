@@ -6,7 +6,7 @@ defmodule ChercheVille.Mixfile do
     [
       app: :chercheville,
       description: "Service allowing to search cities based on data from GeoNames",
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.6",
       source_url: @repo_url,
       start_permanent: Mix.env() == :prod,
