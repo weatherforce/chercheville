@@ -87,7 +87,7 @@ defmodule ChercheVille.SeedData do
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      Mix.Task.run("app.start")
+      Application.ensure_all_started(:chercheville)
       admin1_codes = read_admin_codes("admin1CodesASCII.txt")
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)
