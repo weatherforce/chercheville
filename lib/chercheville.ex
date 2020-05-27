@@ -49,7 +49,7 @@ defmodule ChercheVille do
   Then visiting the http://localhost:4000 should show a list of available endpoints.
 
   ## Calling Elixir functions directly
-  
+
   Two search functions are available. Textual search with `ChercheVille.Search.text/1`
   and spatial search with `ChercheVille.Search.coordinates/2`.
 
@@ -62,11 +62,11 @@ defmodule ChercheVille do
       ChercheVille.Search.text("toulouse")
 
   ### Spatial search example
-  
+
       ChercheVille.Search.coordinates(43.6, 1.44)
 
   ## Running tests
-  
+
   In order to run tests you'll need to create the `cities_test` database with the same extensions as the dev database (see [Preparing the database](#module-preparing-the-database)) and run the migrations in the `test` environment:
 
       $ MIX_ENV=test mix ecto.migrate

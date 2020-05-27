@@ -13,7 +13,6 @@ defmodule MyPlugTest do
   end
 
   describe "text search" do
-
     test "with valid query string" do
       # Create a test connection
       conn = get("/cities?q=Toulouse")
@@ -36,7 +35,6 @@ defmodule MyPlugTest do
       assert conn.status == 400
       assert conn.resp_body =~ "missing query string param"
     end
-
   end
 
   describe "not found" do
@@ -49,7 +47,6 @@ defmodule MyPlugTest do
   end
 
   describe "nearest search" do
-
     test "with valid coordinates" do
       conn = get("/cities/nearest?lat=43.1&lon=0.96")
 
@@ -88,6 +85,6 @@ defmodule MyPlugTest do
   end
 
   defp decode_body(conn) do
-    conn.resp_body |> Jason.decode!
+    conn.resp_body |> Jason.decode!()
   end
 end

@@ -53,6 +53,7 @@ defmodule ChercheVille.Search do
     point = %Geo.Point{coordinates: {latitude, longitude}, srid: 4326}
     limit = Keyword.get(opts, :limit, 10)
     country_code = Keyword.get(opts, :country_code)
+
     query =
       from(
         city in ChercheVille.City,
@@ -77,6 +78,7 @@ defmodule ChercheVille.Search do
   defp filter_by_country(query, country_code) when not is_nil(country_code) do
     from city in query, where: city.country_code == ^country_code
   end
+
   defp filter_by_country(query, _), do: query
 
   defp geom_to_coordinates(cities) do

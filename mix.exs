@@ -30,7 +30,7 @@ defmodule ChercheVille.Mixfile do
         "GitHub" => @repo_url,
         "WeatherForce" => "http://weatherforce.org"
       },
-      licenses: ["MIT"],
+      licenses: ["MIT"]
     ]
   end
 

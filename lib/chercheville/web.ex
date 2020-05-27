@@ -11,11 +11,13 @@ defmodule ChercheVille.Web do
 
   get "/cities" do
     conn = fetch_query_params(conn)
+
     case conn.params do
       %{"q" => q} ->
         results = Search.text(q)
         resp_data = post_process_results(results)
         send_json(conn, resp_data)
+
       _ ->
         send_resp(conn, 400, "Bad request: missing query string parameter `q`.")
     end
@@ -23,16 +25,24 @@ defmodule ChercheVille.Web do
 
   get "/cities/nearest" do
     conn = fetch_query_params(conn)
+
     with %{"lat" => latitude, "lon" => longitude} <- conn.params,
          {latitude, _} <- Float.parse(latitude),
-         {longitude, _} <- Float.parse(longitude)
-    do
-        results = Search.coordinates(latitude, longitude, country_code: country_code(conn.params))
-        resp_data = results
-                    |> post_process_results
-        send_json(conn, resp_data)
+         {longitude, _} <- Float.parse(longitude) do
+      results = Search.coordinates(latitude, longitude, country_code: country_code(conn.params))
+
+      resp_data =
+        results
+        |> post_process_results
+
+      send_json(conn, resp_data)
     else
-      _ -> send_resp(conn, 400, "Bad request: invalid coordinates. Expecting numbers for `lat` and `lon` parameters.")
+      _ ->
+        send_resp(
+          conn,
+          400,
+          "Bad request: invalid coordinates. Expecting numbers for `lat` and `lon` parameters."
+        )
     end
   end
 
@@ -71,14 +81,17 @@ defmodule ChercheVille.Web do
       "endpoints" => %{
         "cities" => %{
           "url" => "/cities/?q={search_string}",
-          "description" => "City search service. Provide search string as a query string parameter `q`."
+          "description" =>
+            "City search service. Provide search string as a query string parameter `q`."
         },
         "nearest_cities" => %{
           "url" => "/cities/nearest?lat={latitude}&lon={longitude}[&country_code={country_code}]",
-          "description" => "Cities located nearest to requested coordinates. Optionally filter by country code."
+          "description" =>
+            "Cities located nearest to requested coordinates. Optionally filter by country code."
         }
       }
     }
+
     send_json(conn, table_of_contents, 404)
   end
 end

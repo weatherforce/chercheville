@@ -26,4 +26,7 @@ otp_release:
 env:
   - MIX_ENV=test
 
-script: mix coveralls.travis
+script:
+  - mix format --check-formatted
+  - mix credo -a
+  - mix coveralls.travis

@@ -4,7 +4,6 @@ Ecto.Adapters.SQL.Sandbox.mode(ChercheVille.Repo, :manual)
 Mox.defmock(ChercheVille.FetcherMock, for: ChercheVille.Fetcher)
 
 defmodule TestHelper do
-
   def insert_city(geonameid, name, latitude \\ 43, longitude \\ 1, country_code \\ "FR") do
     point = %Geo.Point{coordinates: {latitude, longitude}, srid: 4326}
 
@@ -25,5 +24,4 @@ defmodule TestHelper do
     changeset = ChercheVille.City.changeset(%ChercheVille.City{}, city)
     ChercheVille.Repo.insert!(changeset)
   end
-
 end
