@@ -1,0 +1,25 @@
+#jinja2: trim_blocks:False
+# Copyright (c) Jupyter Development Team.
+# Distributed under the terms of the Modified BSD License.
+
+# JupyterHub docker-compose configuration file
+version: "3"
+
+services:
+  chercheville-db:
+    image: postgis/postgis
+    restart: always
+    environment:
+      POSTGRES_DB: cities
+      POSTGRES_PASSWORD: postgres
+
+  chercheville:
+    image: chercheville
+    depends_on:
+      - chercheville-db
+    environment:
+      DB_NAME: cities
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_HOST: chercheville-db
+      PORT: 5000
