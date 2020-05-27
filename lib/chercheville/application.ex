@@ -6,16 +6,16 @@ defmodule ChercheVille.Application do
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
-      ChercheVille.Repo,
-      ChercheVille.Search
-      # Starts a worker by calling: ChercheVille.Worker.start_link(arg)
-      # {ChercheVille.Worker, arg},
-    ]
+    web_server =
+      {Plug.Cowboy,
+       scheme: :http,
+       plug: ChercheVille.Web,
+       options: [
+         port: Application.get_env(:chercheville, :http_port)
+       ]}
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    children = [ChercheVille.Repo, web_server]
+
     opts = [strategy: :one_for_one, name: ChercheVille.Supervisor]
     Supervisor.start_link(children, opts)
   end

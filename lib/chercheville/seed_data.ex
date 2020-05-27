@@ -63,13 +63,13 @@ defmodule ChercheVille.SeedData do
   defp fetch_file(filename) do
     destination_filename = data_dir() <> filename
 
-    if not File.exists?(destination_filename) do
+    if File.exists?(destination_filename) do
+      IO.puts("#{destination_filename} already exists")
+    else
       url = @base_url <> filename
       IO.puts("Download #{url}")
       %HTTPotion.Response{body: body, status_code: 200} = @fetcher.get(url)
       File.write(destination_filename, body)
-    else
-      IO.puts("#{destination_filename} already exists")
     end
 
     destination_filename
@@ -87,7 +87,7 @@ defmodule ChercheVille.SeedData do
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      Mix.Task.run "app.start"
+      Mix.Task.run("app.start")
       admin1_codes = read_admin_codes("admin1CodesASCII.txt")
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)
@@ -137,7 +137,9 @@ defmodule ChercheVille.SeedData do
   end
 
   defp geonameids_from_admin_code_map(admin_codes) do
-    for {_code, attributes} <- admin_codes, do: attributes["geonameid"]
+    for {_code, attributes} <- admin_codes, into: MapSet.new() do
+      attributes["geonameid"]
+    end
   end
 
   defp places_map_for_geonameids(places, geonameids) do
@@ -147,7 +149,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp stream_csv(filename) do
-    File.stream!(filename)
+    open_binstream(filename)
     |> CSV.decode(separator: ?\t, headers: @places_headers)
     |> Stream.filter(fn
       {:ok, _} -> true
@@ -228,12 +230,24 @@ defmodule ChercheVille.SeedData do
   end
 
   defp read_admin_codes(filename) do
-    File.stream!(data_dir() <> filename)
+    open_binstream(data_dir() <> filename)
     |> CSV.decode(separator: ?\t, headers: ["code", "name", "asciiname", "geonameid"])
     |> Enum.reduce(%{}, fn
       {:ok, row}, map -> Map.put(map, row["code"], row)
       {:error, _}, map -> map
     end)
+  end
+
+  defp open_binstream(filename) do
+    # Instead of creating a stream directly with File.stream!/1, we use
+    # IO.binstream/2 to create a raw binary stream, which makes it a lot
+    # faster.
+    #
+    # For example, to import data for Germany it went from about half an hour
+    # to about 2 minutes and half.
+    #
+    # See https://elixirforum.com/t/help-with-performance-file-io/802/36
+    File.open!(filename) |> IO.binstream(:line)
   end
 
   defp load_config, do: Application.load(:chercheville)

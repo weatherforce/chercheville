@@ -18,12 +18,15 @@ before_script:
   - mix ecto.migrate
 
 elixir:
-  - 1.6.0
+  - 1.9.0
 
 otp_release:
-  - 20.0
+  - 22.0
 
 env:
   - MIX_ENV=test
 
-script: mix coveralls.travis
+script:
+  - mix format --check-formatted
+  - mix credo -a
+  - mix coveralls.travis

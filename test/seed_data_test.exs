@@ -1,5 +1,5 @@
 defmodule SeedDataTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import Ecto.Query, only: [from: 2]
   import Mox
   alias ChercheVille.SeedData
@@ -32,6 +32,7 @@ defmodule SeedDataTest do
       brussels = query |> ChercheVille.Repo.one()
       assert %ChercheVille.City{population: 1_019_022} = brussels
     end
+
     test "should use local admin1 name" do
       SeedData.import_data(["ZZ"])
 

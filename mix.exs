@@ -6,7 +6,7 @@ defmodule ChercheVille.Mixfile do
     [
       app: :chercheville,
       description: "Service allowing to search cities based on data from GeoNames",
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.6",
       source_url: @repo_url,
       start_permanent: Mix.env() == :prod,
@@ -30,7 +30,7 @@ defmodule ChercheVille.Mixfile do
         "GitHub" => @repo_url,
         "WeatherForce" => "http://weatherforce.org"
       },
-      licenses: ["MIT"],
+      licenses: ["MIT"]
     ]
   end
 
@@ -45,16 +45,17 @@ defmodule ChercheVille.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
-      {:postgrex, "~> 0.11"},
-      {:httpotion, "~> 3.0"},
-      {:csv, "~> 2.0.0"},
-      {:geo_postgis, "~> 2.0"},
-      {:excoveralls, "~> 0.8", only: :test},
-      {:mox, "~> 0.3", only: :test},
-      {:credo, "~> 0.3", only: [:dev, :test]},
-      {:earmark, "~> 0.1", only: :dev},
-      {:ex_doc, "~> 0.11", only: :dev}
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, ">= 0.0.0"},
+      {:httpotion, "~> 3.1"},
+      {:csv, "~> 2.3"},
+      {:geo_postgis, "~> 3.3"},
+      {:plug_cowboy, "~> 2.0"},
+      {:excoveralls, "~> 0.12", only: :test},
+      {:mox, "~> 0.5", only: :test},
+      {:credo, "~> 1.4", only: [:dev, :test]},
+      {:earmark, "~> 1.4", only: :dev},
+      {:ex_doc, "~> 0.22", only: :dev}
     ]
   end
 end

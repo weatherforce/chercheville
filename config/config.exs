@@ -9,7 +9,12 @@ config :chercheville, ChercheVille.Repo,
   password: "postgres",
   hostname: "localhost",
   types: ChercheVille.PostgresTypes
+
 config :chercheville, ecto_repos: [ChercheVille.Repo]
+
+config :chercheville,
+  http_port: 4000,
+  default_country_code: "FR"
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -36,6 +41,6 @@ config :chercheville, ecto_repos: [ChercheVille.Repo]
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
-if File.exists?("#{File.cwd!()}/config/#{Mix.env}.exs") do
-    import_config "#{Mix.env}.exs"
+if File.exists?("#{File.cwd!()}/config/#{Mix.env()}.exs") do
+  import_config "#{Mix.env()}.exs"
 end
