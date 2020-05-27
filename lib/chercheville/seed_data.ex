@@ -63,13 +63,13 @@ defmodule ChercheVille.SeedData do
   defp fetch_file(filename) do
     destination_filename = data_dir() <> filename
 
-    if not File.exists?(destination_filename) do
+    if File.exists?(destination_filename) do
+      IO.puts("#{destination_filename} already exists")
+    else
       url = @base_url <> filename
       IO.puts("Download #{url}")
       %HTTPotion.Response{body: body, status_code: 200} = @fetcher.get(url)
       File.write(destination_filename, body)
-    else
-      IO.puts("#{destination_filename} already exists")
     end
 
     destination_filename
