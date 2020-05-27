@@ -1,4 +1,7 @@
 defmodule ChercheVille.Web do
+  @moduledoc """
+  Expose search functionalities as a web service.
+  """
   use Plug.Router
   import Plug.Conn
   alias ChercheVille.Search
