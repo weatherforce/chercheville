@@ -2,6 +2,7 @@ defmodule ChercheVille.SeedData do
   @moduledoc """
   Loading data from the geonames text files into our database.
   """
+  @app :chercheville
   @start_apps [:crypto, :ssl, :postgrex, :ecto]
 
   @base_url "http://download.geonames.org/export/dump/"
@@ -27,10 +28,31 @@ defmodule ChercheVille.SeedData do
       modification_date 
     }
 
-  @fetcher Application.get_env(:chercheville, :fetcher, ChercheVille.HTTPFetcher)
+  @fetcher Application.get_env(@app, :fetcher, ChercheVille.HTTPFetcher)
 
   defp data_dir do
-    Application.get_env(:chercheville, :data_dir, "./geonames_data/")
+    Application.get_env(@app, :data_dir, "./geonames_data/")
+  end
+
+  @doc """
+  Run database migrations
+  """
+  def migrate do
+    for repo <- repos() do
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
+    end
+  end
+
+  @doc """
+  Database migration rollback
+  """
+  def rollback(repo, version) do
+    {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
+  end
+
+  defp repos do
+    Application.load(@app)
+    Application.fetch_env!(@app, :ecto_repos)
   end
 
   @doc """
@@ -38,7 +60,7 @@ defmodule ChercheVille.SeedData do
   """
   def fetch_data(country_codes \\ []) do
     load_config()
-    country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
+    country_codes = Application.get_env(@app, :country_codes, country_codes)
 
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
@@ -82,12 +104,12 @@ defmodule ChercheVille.SeedData do
   def import_data(country_codes \\ []) do
     load_config()
     start_repo()
-    country_codes = Application.get_env(:chercheville, :country_codes, country_codes)
+    country_codes = Application.get_env(@app, :country_codes, country_codes)
 
     if length(country_codes) < 1 do
       IO.puts("*** No country codes specified ***")
     else
-      Application.ensure_all_started(:chercheville)
+      Application.ensure_all_started(@app)
       admin1_codes = read_admin_codes("admin1CodesASCII.txt")
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)
@@ -250,7 +272,7 @@ defmodule ChercheVille.SeedData do
     File.open!(filename) |> IO.binstream(:line)
   end
 
-  defp load_config, do: Application.load(:chercheville)
+  defp load_config, do: Application.load(@app)
 
   defp start_repo, do: Enum.each(@start_apps, &Application.ensure_all_started/1)
 end
