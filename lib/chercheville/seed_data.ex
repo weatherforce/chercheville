@@ -123,6 +123,7 @@ defmodule ChercheVille.SeedData do
   end
 
   defp import_country(country_code, admin1_codes, admin2_codes) do
+    IO.puts("Importing data for country #{country_code}")
     filename = data_dir() <> country_code <> ".txt"
 
     places = stream_csv(filename)
