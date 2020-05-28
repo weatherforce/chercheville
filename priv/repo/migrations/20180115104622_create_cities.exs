@@ -2,6 +2,11 @@ defmodule ChercheVille.Repo.Migrations.CreateCities do
   use Ecto.Migration
 
   def change do
+
+    execute "CREATE EXTENSION IF NOT EXISTS postgis"
+    execute "CREATE EXTENSION IF NOT EXISTS unaccent"
+    execute "CREATE EXTENSION IF NOT EXISTS pg_trgm"
+
     create table(:cities, primary_key: false) do
       add :geonameid, :integer, primary_key: true
       add :name, :string, null: false

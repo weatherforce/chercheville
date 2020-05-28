@@ -5,11 +5,7 @@ defmodule ChercheVille do
 
   ## Preparing the database
 
-  ChercheVille requires a PostgreSQL database with some extensions enabled. Login to cities database and then run:
-
-      CREATE EXTENSION postgis;
-      CREATE EXTENSION unaccent;
-      CREATE EXTENSION pg_trgm;
+  ChercheVille requires PostgreSQL with the PostGIS extension installed.
 
   Configure database access in `config/config.exs`:
 
