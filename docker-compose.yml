@@ -14,7 +14,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   app:
-    image: chercheville
+    image: weatherforce/chercheville
     depends_on:
       - db
     environment:
@@ -23,3 +23,5 @@ services:
       DB_USERNAME: postgres
       DB_HOST: db
       PORT: 5000
+    ports:
+      - 5000:5000
