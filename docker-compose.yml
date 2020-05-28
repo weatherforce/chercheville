@@ -6,20 +6,20 @@
 version: "3"
 
 services:
-  chercheville-db:
+  db:
     image: postgis/postgis
     restart: always
     environment:
       POSTGRES_DB: cities
       POSTGRES_PASSWORD: postgres
 
-  chercheville:
+  app:
     image: chercheville
     depends_on:
-      - chercheville-db
+      - db
     environment:
       DB_NAME: cities
       DB_PASSWORD: postgres
       DB_USERNAME: postgres
-      DB_HOST: chercheville-db
+      DB_HOST: db
       PORT: 5000
