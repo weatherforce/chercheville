@@ -18,10 +18,11 @@ RUN mix release --path /app --quiet
 # Second stage build the execution image
 FROM alpine:3.11
 
-RUN apk add --update openssl ncurses-libs \
+RUN apk add --update openssl ncurses-libs postgresql-client \
         && rm -rf /var/cache/apk/*
 
 COPY --from=builder /app /app
 WORKDIR /app
-ENTRYPOINT ["/app/bin/chercheville"]
+COPY entrypoint.sh .
+ENTRYPOINT ["./entrypoint.sh"]
 CMD ["start"]
