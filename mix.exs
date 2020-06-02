@@ -19,7 +19,7 @@ defmodule ChercheVille.Mixfile do
         "coveralls.post": :test,
         "coveralls.html": :test
       ],
-      docs: [main: "ChercheVille"]
+      docs: [main: "readme", extras: ["README.md"]]
     ]
   end
 
