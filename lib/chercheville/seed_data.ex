@@ -101,7 +101,7 @@ defmodule ChercheVille.SeedData do
   Load cities data from files that have been previously fetched with
   `fetch_data/1` and insert this data into our database.
   """
-  def import_data(country_codes \\ []) do
+  def insert_data(country_codes \\ []) do
     load_config()
     start_repo()
     country_codes = Application.get_env(@app, :country_codes, country_codes)
@@ -114,6 +114,14 @@ defmodule ChercheVille.SeedData do
       admin2_codes = read_admin_codes("admin2Codes.txt")
       import_countries(country_codes, admin1_codes, admin2_codes)
     end
+  end
+
+  @doc """
+  Fetch data for countries specified by `country_codes` and insert this data into our database.
+  """
+  def import_data(country_codes \\ []) do
+    fetch_data(country_codes)
+    insert_data(country_codes)
   end
 
   defp import_countries(country_codes, admin1_codes, admin2_codes) do

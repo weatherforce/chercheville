@@ -17,13 +17,9 @@ try this app by cloning [the repository](https://github.com/weatherforce/cherche
 
 The service should be availble at http://localhost:5000/
 
-Then to import data into the database you have to call a couple of Elixir functions, providing them a list of  [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) as argument.
+Then to import data into the database you have to call a an Elixir function, providing it a list of  [country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) as argument.
 
-For example, to download the data for France, Belgium and Spain:
-
-    $ docker exec -ti chercheville_app_1 ./bin/chercheville rpc 'ChercheVille.SeedData.fetch_data(["FR", "BE", "ES"])'
-
-Then to import the data you've downloaded into the database:
+For example, to import data for France, Belgium and Spain:
 
     $ docker exec -ti chercheville_app_1 ./bin/chercheville rpc 'ChercheVille.SeedData.import_data(["FR", "BE", "ES"])'
 
@@ -54,11 +50,7 @@ as arguments.
 
 ### Importing data
 
-To fetch data files from geonames.org and store them locally:
-
-    $ mix chercheville.fetch_data FR BE ES
-
-To load data from those files into our database:
+To import data from geonames.org into our database:
 
     $ mix chercheville.import_data FR BE ES
 
