@@ -9,4 +9,4 @@ do
 done
 
 ./bin/chercheville eval 'ChercheVille.SeedData.migrate()'
-./bin/chercheville $1
+./bin/chercheville $*
