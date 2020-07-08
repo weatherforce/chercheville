@@ -1,11 +1,11 @@
 defmodule Mix.Tasks.Chercheville.ImportData do
   @moduledoc """
-  Mix task for importing data from geonames files into our database.
+  Mix task for importing data from geonames into our database.
   """
   use Mix.Task
 
   @shortdoc """
-  Import data files from geonames.org into the database.
+  Import data from geonames.org into the database.
 
   Files structure:
     http://download.geonames.org/export/dump/readme.txt

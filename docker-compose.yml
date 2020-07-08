@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: postgis/postgis
+    restart: always
+    environment:
+      POSTGRES_DB: cities
+      POSTGRES_PASSWORD: postgres
+
+  app:
+    image: weatherforce/chercheville
+    depends_on:
+      - db
+    environment:
+      DB_NAME: cities
+      DB_PASSWORD: postgres
+      DB_USERNAME: postgres
+      DB_HOST: db
+      PORT: 5000
+    ports:
+      - 5000:5000

@@ -7,7 +7,7 @@ defmodule ChercheVille.Repo.Migrations.AddTrgmIndex do
         RETURNS text
       AS
       $BODY$
-        SELECT unaccent($1);
+        SELECT public.unaccent($1);
       $BODY$
       LANGUAGE sql
       IMMUTABLE;

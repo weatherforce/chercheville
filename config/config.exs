@@ -7,8 +7,7 @@ config :chercheville, ChercheVille.Repo,
   database: "cities",
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
-  types: ChercheVille.PostgresTypes
+  hostname: "localhost"
 
 config :chercheville, ecto_repos: [ChercheVille.Repo]
 
