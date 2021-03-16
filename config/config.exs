@@ -7,7 +7,9 @@ config :chercheville, ChercheVille.Repo,
   database: "cities",
   username: "postgres",
   password: "postgres",
-  hostname: "localhost"
+  hostname: "localhost",
+  # increase timeout to 5 minutes for importing large countries
+  timeout: 5 * 60 * 1000
 
 config :chercheville, ecto_repos: [ChercheVille.Repo]
 
