@@ -13,7 +13,9 @@ config :chercheville, ecto_repos: [ChercheVille.Repo]
 
 config :chercheville,
   http_port: 4000,
-  default_country_code: "FR"
+  default_country_code: "FR",
+  # increase timeout to 5 minutes for importing large countries
+  import_timeout: 5 * 60 * 1000
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

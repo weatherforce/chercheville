@@ -28,7 +28,9 @@ defmodule ChercheVille.SeedData do
       modification_date 
     }
 
-  @fetcher Application.get_env(@app, :fetcher, ChercheVille.HTTPFetcher)
+  defp fetcher do
+    Application.get_env(@app, :fetcher, ChercheVille.HTTPFetcher)
+  end
 
   defp data_dir do
     Application.get_env(@app, :data_dir, "./geonames_data/")
@@ -67,7 +69,7 @@ defmodule ChercheVille.SeedData do
     else
       File.mkdir(data_dir())
 
-      @fetcher.start()
+      fetcher().start()
 
       fetch_file("admin1CodesASCII.txt")
       fetch_file("admin2Codes.txt")
@@ -90,7 +92,7 @@ defmodule ChercheVille.SeedData do
     else
       url = @base_url <> filename
       IO.puts("Download #{url}")
-      %HTTPotion.Response{body: body, status_code: 200} = @fetcher.get(url)
+      %HTTPotion.Response{body: body, status_code: 200} = fetcher().get(url)
       File.write(destination_filename, body)
     end
 
@@ -241,7 +243,8 @@ defmodule ChercheVille.SeedData do
     sql_columns = Enum.join(columns, ", ")
     sql = "COPY cities(#{sql_columns}) FROM STDIN"
     stream = Ecto.Adapters.SQL.stream(ChercheVille.Repo, sql)
-    ChercheVille.Repo.transaction(fn -> Enum.into(lines, stream) end)
+    timeout = Application.fetch_env!(:chercheville, :import_timeout)
+    ChercheVille.Repo.transaction(fn -> Enum.into(lines, stream) end, timeout: timeout)
   end
 
   defp add_admin1_names(rows, country_code, admin1_codes) do
