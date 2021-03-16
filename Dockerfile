@@ -1,5 +1,5 @@
 # First stage: build the release
-FROM elixir:1.10-alpine AS builder
+FROM elixir:1.11-alpine AS builder
 
 # Copy source code
 WORKDIR /src
