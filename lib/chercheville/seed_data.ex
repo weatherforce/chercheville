@@ -241,7 +241,8 @@ defmodule ChercheVille.SeedData do
     sql_columns = Enum.join(columns, ", ")
     sql = "COPY cities(#{sql_columns}) FROM STDIN"
     stream = Ecto.Adapters.SQL.stream(ChercheVille.Repo, sql)
-    ChercheVille.Repo.transaction(fn -> Enum.into(lines, stream) end)
+    timeout = Application.fetch_env!(:chercheville, :import_timeout)
+    ChercheVille.Repo.transaction(fn -> Enum.into(lines, stream) end, timeout: timeout)
   end
 
   defp add_admin1_names(rows, country_code, admin1_codes) do
