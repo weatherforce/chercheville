@@ -23,6 +23,7 @@ defmodule MyPlugTest do
       response_data = decode_body(conn)
       top_result = Enum.at(response_data, 0)
       assert Map.get(top_result, "name") == "Toulouse"
+      assert Map.get(top_result, "country_code") == "FR"
 
       assert get_resp_header(conn, "content-type") == ["application/json; charset=utf-8"]
     end

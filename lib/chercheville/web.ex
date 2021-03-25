@@ -66,7 +66,8 @@ defmodule ChercheVille.Web do
       :longitude,
       :admin2_code,
       :admin2_name,
-      :admin1_name
+      :admin1_name,
+      :country_code
     ])
   end
 
