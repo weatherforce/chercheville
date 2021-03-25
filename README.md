@@ -92,6 +92,11 @@ You should be able to build the Docker image like this:
 
     $ docker build -t chercheville .
 
+Then you can tag it and push it to Dockerhub:
+
+    $ docker tag chercheville:latest weatherforce/chercheville
+    $ docker push weatherforce/chercheville
+
 This Docker packaging has been largely inspired by these articles, which you may want to read for background info:
 - [Build Docker Images From An Elixir Project, Why and How](https://medium.com/@qhwa_85848/build-docker-images-from-an-elixir-project-why-and-how-78e19468210)
 - [Deploy a Phoenix app with Docker stack](https://dev.to/ilsanto/deploy-a-phoenix-app-with-docker-stack-1j9c)
