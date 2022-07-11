@@ -16,7 +16,7 @@ RUN mix release --path /app --quiet
 
 
 # Second stage build the execution image
-FROM alpine:3.11
+FROM alpine:3.16
 
 RUN apk add --update openssl ncurses-libs postgresql-client \
         && rm -rf /var/cache/apk/*
