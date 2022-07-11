@@ -36,6 +36,15 @@ defmodule MyPlugTest do
       assert conn.status == 400
       assert conn.resp_body =~ "missing query string param"
     end
+
+    test "with empty query string" do
+      # Create a test connection
+      conn = get("/cities?q=")
+
+      # Assert the response and status
+      assert conn.status == 400
+      assert conn.resp_body =~ "empty query string param"
+    end
   end
 
   describe "not found" do
