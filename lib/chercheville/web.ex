@@ -13,6 +13,9 @@ defmodule ChercheVille.Web do
     conn = fetch_query_params(conn)
 
     case conn.params do
+      %{"q" => ""} ->
+        send_resp(conn, 400, "Bad request: empty query string parameter `q`.")
+
       %{"q" => q} ->
         results = Search.text(q)
         resp_data = post_process_results(results)
